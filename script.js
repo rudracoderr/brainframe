@@ -53,47 +53,73 @@ gsap.registerPlugin(ScrollTrigger);
 gsap.registerPlugin(ScrollTrigger);
 
 /* EACH SECTION LOOP (REUSABLE) */
-document.querySelectorAll(".h-scroll").forEach((section) => {
+gsap.registerPlugin(ScrollTrigger);
 
-  const inner = section.querySelector(".h-inner");
-  const panels = section.querySelectorAll(".h-panel");
-  const bars = section.querySelectorAll(".h-progress span");
+/* RESPONSIVE GSAP */
+ScrollTrigger.matchMedia({
 
-  // IMPORTANT: calculate real width
-  let totalWidth = 0;
-  panels.forEach(panel => {
-    totalWidth += panel.offsetWidth;
-  });
+  /* ===== DESKTOP ONLY ===== */
+  "(min-width: 951px)": function () {
 
-  // horizontal animation
-  const tween = gsap.to(inner, {
-    x: () => -(totalWidth - window.innerWidth),
-    ease: "none"
-  });
+    document.querySelectorAll(".h-scroll").forEach((section) => {
 
-  ScrollTrigger.create({
-    trigger: section,
-    start: "top top",
-    end: () => "+=" + (totalWidth - window.innerWidth),
-    pin: true,
-    scrub: 1,
-    animation: tween,
-    invalidateOnRefresh: true,
+      const inner = section.querySelector(".h-inner");
+      const panels = section.querySelectorAll(".h-panel");
+      const bars = section.querySelectorAll(".h-progress span");
 
-    onUpdate: (self) => {
-      let index = Math.round(self.progress * (panels.length - 1));
+      // calculate full width
+      let totalWidth = 0;
+      panels.forEach(panel => {
+        totalWidth += panel.offsetWidth;
+      });
 
-      bars.forEach(b => b.classList.remove("active"));
-      if (bars[index]) bars[index].classList.add("active");
-    }
-  });
+      const tween = gsap.to(inner, {
+        x: () => -(totalWidth - window.innerWidth),
+        ease: "none"
+      });
+
+      ScrollTrigger.create({
+        trigger: section,
+        start: "top top",
+        end: () => "+=" + (totalWidth - window.innerWidth),
+        pin: true,
+        scrub: 1,
+        animation: tween,
+        invalidateOnRefresh: true,
+
+        onUpdate: (self) => {
+          let index = Math.round(self.progress * (panels.length - 1));
+
+          bars.forEach(b => b.classList.remove("active"));
+          if (bars[index]) bars[index].classList.add("active");
+        }
+      });
+
+    });
+
+  },
+
+  /* ===== MOBILE & TABLET ===== */
+  "(max-width: 950px)": function () {
+
+    // remove pin & transform
+    document.querySelectorAll(".h-inner").forEach(inner => {
+      gsap.set(inner, { clearProps: "all" });
+    });
+
+    // kill any running triggers
+    ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+
+  }
 
 });
 
-/* resize fix */
+
+/* refresh properly on resize */
 window.addEventListener("resize", () => {
   ScrollTrigger.refresh();
 });
+
 
 
 const contactBtn = document.querySelector('a[href="#contact"]');
@@ -124,4 +150,5 @@ document.addEventListener('keydown', (e) => {
     overlay.classList.remove('active');
   }
 });
+
 
