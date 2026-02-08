@@ -854,4 +854,62 @@ header {
 .bf-send-btn:hover {
   background: orange;
   transform: translateY(-2px);
+
+}
+/* ===== MOBILE / TABLET FIX FOR HORIZONTAL SECTION ===== */
+
+@media (max-width: 950px) {
+
+  .h-scroll {
+    height: auto;
+    padding: 80px 20px;
+    overflow: hidden;
+  }
+
+  .h-top {
+    position: relative;
+    top: auto;
+    margin-bottom: 40px;
+    text-align: center;
+  }
+
+  /* remove progress bar on mobile */
+  .h-progress {
+    display: none;
+  }
+
+  .h-outer {
+    overflow: visible !important;
+  }
+
+  .h-inner {
+    display: flex;
+    flex-direction: column;
+    width: 100% !important;
+    transform: none !important;
+  }
+
+  .h-panel {
+    width: 100% !important;
+    height: auto;
+    margin-bottom: 40px;
+  }
+
+  .box {
+    width: 100%;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+  .box img {
+    width: 100%;
+    height: auto;
+    border-radius: 14px;
+  }
+
+  .txt {
+    padding: 20px 10px;
+    text-align: center;
+  }
+
 }
